@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emotion Music Recommend System</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container my-5">
+      <header class="text-center mb-5">
+        <h1 class="display-4">Emotion Music Recommend System</h1>
+        <p class="lead">Let your emotions guide your music experience</p>
+      </header>
+
+      <!-- User Authentication Section -->
+      <div class="row mb-4" id="auth-section">
+        <div class="col-md-6 offset-md-3">
+          <div class="card">
+            <div class="card-header">
+              <ul
+                class="nav nav-tabs card-header-tabs"
+                id="authTabs"
+                role="tablist"
+              >
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link active"
+                    id="login-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#login"
+                    type="button"
+                    role="tab"
+                  >
+                    Login
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="register-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#register"
+                    type="button"
+                    role="tab"
+                  >
+                    Register
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="authTabsContent">
+                <div
+                  class="tab-pane fade show active"
+                  id="login"
+                  role="tabpanel"
+                >
+                  <form id="login-form">
+                    <div class="mb-3">
+                      <label for="login-username" class="form-label"
+                        >Username</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="login-username"
+                        required
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <label for="login-password" class="form-label"
+                        >Password</label
+                      >
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="login-password"
+                        required
+                      />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                  </form>
+                </div>
+                <div class="tab-pane fade" id="register" role="tabpanel">
+                  <form id="register-form">
+                    <div class="mb-3">
+                      <label for="register-username" class="form-label"
+                        >Username</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="register-username"
+                        required
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <label for="register-email" class="form-label"
+                        >Email</label
+                      >
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="register-email"
+                        required
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <label for="register-password" class="form-label"
+                        >Password</label
+                      >
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="register-password"
+                        required
+                      />
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                      Register
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Info Section (hidden by default) -->
+      <div class="row mb-4 d-none" id="user-section">
+        <div class="col-md-8 offset-md-2">
+          <div class="card">
+            <div
+              class="card-body d-flex justify-content-between align-items-center"
+            >
+              <div>
+                <h5 class="card-title">
+                  Welcome, <span id="user-name">User</span>!
+                </h5>
+                <p class="card-text" id="user-email">user@example.com</p>
+              </div>
+              <div>
+                <button
+                  class="btn btn-outline-primary me-2"
+                  id="preferences-btn"
+                >
+                  Preferences
+                </button>
+                <button class="btn btn-outline-primary me-2" id="favorites-btn">
+                  Favorites
+                </button>
+                <button class="btn btn-outline-danger" id="logout-btn">
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preferences Modal -->
+      <div class="modal fade" id="preferencesModal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">User Preferences</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form id="preferences-form">
+                <div class="mb-3">
+                  <label for="preferred-genre" class="form-label"
+                    >Preferred Genre</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="preferred-genre"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="preferred-artist" class="form-label"
+                    >Preferred Artist</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="preferred-artist"
+                  />
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="save-preferences"
+              >
+                Save Preferences
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Application Section (hidden until logged in) -->
+      <div class="row d-none" id="app-section">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h3>Real-time Emotion Detection</h3>
+            </div>
+            <div class="card-body">
+              <div class="camera-container">
+                <video id="video" width="100%" autoplay playsinline></video>
+                <canvas id="canvas" class="d-none"></canvas>
+              </div>
+              <div class="emotion-result mt-3">
+                <h4>
+                  Detected Emotion:
+                  <span id="emotion-label" class="badge bg-primary">None</span>
+                </h4>
+                <p>Confidence: <span id="confidence">0%</span></p>
+              </div>
+              <div class="actions mt-3">
+                <button id="capture-btn" class="btn btn-primary">
+                  Capture Emotion
+                </button>
+                <button id="start-cam" class="btn btn-success">
+                  Start Camera
+                </button>
+                <button id="stop-cam" class="btn btn-danger">
+                  Stop Camera
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card">
+            <div
+              class="card-header d-flex justify-content-between align-items-center"
+            >
+              <h3>Music Recommendations</h3>
+              <button class="btn btn-sm btn-outline-secondary" id="refresh-btn">
+                Refresh
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="recommendations">
+                <p id="no-recommendations" class="text-muted">
+                  No recommendations yet. Capture your emotion first!
+                </p>
+                <ul id="song-list" class="list-group"></ul>
+              </div>
+
+              <div class="audio-player mt-4">
+                <h4>Now Playing</h4>
+                <div class="current-song">
+                  <p id="now-playing" class="text-muted">No song selected</p>
+                </div>
+                <audio id="audio-player" controls class="w-100"></audio>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Favorites Section (hidden by default) -->
+      <div class="row mb-4 d-none" id="favorites-section">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3>Your Favorite Songs</h3>
+            </div>
+            <div class="card-body">
+              <div id="no-favorites" class="text-muted">
+                You haven't added any favorites yet.
+              </div>
+              <ul id="favorites-list" class="list-group"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>
